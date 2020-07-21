@@ -13,4 +13,15 @@ const assertArraysEqual = (listA, listB) => {
   console.log(`🛑🛑🛑 Assertion Failed: ${listA} !== ${listB}`);
 };
 
-assertArraysEqual([1, 2, 3], [1, 2, 3])
+const without = (source, itemsToRemove) => {
+  return source.filter( item => !itemsToRemove.includes(item));
+};
+
+const array = [4, 1, 6];
+
+assertArraysEqual(without([1, 2, 3], [1]), [2, 3]);
+assertArraysEqual(without(["1", "2", "3"], [1, 2, "3"]), ["1", "2"]);
+
+without(array, [4, 1, 6]);
+
+assertArraysEqual(array, [4, 1, 6]);
