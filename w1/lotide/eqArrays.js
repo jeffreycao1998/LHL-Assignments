@@ -7,7 +7,7 @@ const assertEqual = (actual, expected) => {
 };
 
 const eqArrays = (listA, listB) => {
-  for (let i = 0; i < listA; i++) {
+  for (let i = 0; i < listA.length; i++) {
     if (listA[i] !== listB[i]) return false
   }
   return true;
