@@ -7,9 +7,6 @@ const assertEqual = (actual, expected) => {
 };
 
 const findKeyByValue = (object, value) => {
-  // scan object
-  // return first key that contains value
-  // if no key found, return undefined
   for (let key in object) {
     if (object[key].toLowerCase().includes(value.toLowerCase())) {
       return key;
@@ -27,3 +24,4 @@ const bestTVShowsByGenre = {
 assertEqual(findKeyByValue(bestTVShowsByGenre, "The Wire"), "drama");
 assertEqual(findKeyByValue(bestTVShowsByGenre, "That '70s Show"), undefined);
 assertEqual(findKeyByValue(bestTVShowsByGenre, "brooklyn nine-nine"), "comedy");
+assertEqual(findKeyByValue(bestTVShowsByGenre, "The Expanse"), "sci_fi");
