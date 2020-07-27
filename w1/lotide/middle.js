@@ -1,18 +1,3 @@
-const eqArrays = (listA, listB) => {
-  for (let i = 0; i < listA.length; i++) {
-    if (listA[i] !== listB[i]) return false
-  }
-  return true;
-};
-
-const assertArraysEqual = (listA, listB) => {
-  if (eqArrays(listA, listB)) {
-    console.log(`✅✅✅ Assertion Passed: ${listA} === ${listB}`);
-    return;
-  }
-  console.log(`🛑🛑🛑 Assertion Failed: ${listA} !== ${listB}`);
-};
-
 const middle = (list) => {
   if (list.length % 2 === 0) {
     let middle_left = Math.floor(list.length / 2);
@@ -23,7 +8,4 @@ const middle = (list) => {
   return [list[middle]];
 };
 
-assertArraysEqual(middle([1, 2, 3]), [2]);
-assertArraysEqual(middle([1, 2, 3, 4, 5]), [3]);
-assertArraysEqual(middle([1, 2, 3, 4]), [2, 3]);
-assertArraysEqual(middle([1, 2, 3, 4, 5, 6]), [3, 4]);
+module.exports = middle;
