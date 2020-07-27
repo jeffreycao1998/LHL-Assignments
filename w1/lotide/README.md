@@ -43,4 +43,3 @@ The following functions are currently implemented:
 * `tail(array)`: return a array without the first element
 * `takeUntil(array, callback)`: return an array up to the point where the callback on the item in the array returns true
 * `without(array, itemsToRemove)`: return an array without any items that occurs in itemsToRemove
-* ``:
