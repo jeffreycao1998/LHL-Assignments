@@ -1,7 +1,7 @@
 {
-  "name": "lotide",
+  "name": "@jeffreycao1998/lotide",
   "version": "1.0.0",
-  "description": "",
+  "description": "A mini clone of Lodash created for learning purposes!",
   "main": "assertArraysEqual.js",
   "directories": {
     "test": "test"
@@ -10,7 +10,7 @@
     "test": "mocha"
   },
   "keywords": [],
-  "author": "",
+  "author": "Jeffrey Cao",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0",
