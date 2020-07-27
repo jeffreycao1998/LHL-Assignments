@@ -27,6 +27,7 @@ const map = (array, callback) => {
   return results;
 };
 
-assertArraysEqual(map(words, word => word[0]), ['g', 'c', 't', 'm', 't']);
-assertArraysEqual(map(words, word => word.slice(1)), ['round', 'ontrol', 'o', 'ajor', 'om']);
-assertArraysEqual(map(words, word => word + 'XD'), ['groundXD', 'controlXD', 'toXD', 'majorXD', 'tomXD']);
+// assertArraysEqual(map(words, word => word[0]), ['g', 'c', 't', 'm', 't']);
+// assertArraysEqual(map(words, word => word.slice(1)), ['round', 'ontrol', 'o', 'ajor', 'om']);
+// assertArraysEqual(map(words, word => word + 'XD'), ['groundXD', 'controlXD', 'toXD', 'majorXD', 'tomXD']);
+module.exports = map;

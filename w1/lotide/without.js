@@ -17,11 +17,12 @@ const without = (source, itemsToRemove) => {
   return source.filter( item => !itemsToRemove.includes(item));
 };
 
-const array = [4, 1, 6];
+// const array = [4, 1, 6];
 
-assertArraysEqual(without([1, 2, 3], [1]), [2, 3]);
-assertArraysEqual(without(["1", "2", "3"], [1, 2, "3"]), ["1", "2"]);
+// assertArraysEqual(without([1, 2, 3], [1]), [2, 3]);
+// assertArraysEqual(without(["1", "2", "3"], [1, 2, "3"]), ["1", "2"]);
 
-without(array, [4, 1, 6]);
+// without(array, [4, 1, 6]);
 
-assertArraysEqual(array, [4, 1, 6]);
+// assertArraysEqual(array, [4, 1, 6]);
+module.exports = without;
