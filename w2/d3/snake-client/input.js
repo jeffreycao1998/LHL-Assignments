@@ -17,6 +17,16 @@ const handleUserInput = (key) => {
     case '\u0064': // d
       connection.write('Move: right');
       break;
+    case '\u0031': // 1
+      connection.write("Say: I'm clicking 1!");
+      break;
+    case '\u0032': // 2
+      connection.write("Say: I'm clicking 2!");
+      break;
+    case '\u0033': // 3
+      connection.write("Say: I'm clicking 3!");
+      break;
+    
   }
 };
 
