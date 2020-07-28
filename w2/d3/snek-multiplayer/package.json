@@ -1,0 +1,28 @@
+{
+  "name": "snekjs",
+  "version": "1.0.4",
+  "description": "A terminal-based Snake implementation written in JavaScript (Node.js) 🐍",
+  "author": {
+    "name": "Tania Rascia",
+    "email": "me@taniarascia.com",
+    "url": "https://www.taniarascia.com"
+  },
+  "main": "index.js",
+  "bin": {
+    "snek": "./play.js"
+  },
+  "scripts": {
+    "play": "node play.js"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "ip": "^1.1.5"
+  },
+  "licence": "MIT",
+  "keywords": [
+    "snake",
+    "javascript",
+    "node"
+  ],
+  "private": false
+}
