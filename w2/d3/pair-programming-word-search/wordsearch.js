@@ -1,3 +1,7 @@
+//Worked with Jeffrey Cao for this pair programming activity
+
+
+//Use transpose from previous activity (done with Jay Martens)
 const transpose = function(matrix) {
     let result = [];
     for (const element of matrix[0]) {
@@ -11,6 +15,7 @@ const transpose = function(matrix) {
     return result;
 };
 
+
 const wordSearcher = (letters, word) => {
     const horizontalJoin = letters.map(ls => ls.join(''))
     for (l of horizontalJoin) {
@@ -18,6 +23,7 @@ const wordSearcher = (letters, word) => {
     }
 }
 
+//shift arrays to find words diagonally
 const shiftArrayRight = (letters) => {
     for (let i = 1; i < letters.length; i++) {
         for (let j = 0; j < i; j++) {
