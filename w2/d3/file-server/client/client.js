@@ -1,12 +1,24 @@
 const net = require('net');
-const { get } = require('http');
+const fs = require('fs')
 
 const conn = net.createConnection({
   port: 3000,
 });
 
+conn.setEncoding('utf8');
+
 conn.on('data', data => {
-  console.log(data);
+  const jsonData = JSON.parse(data);
+  const fileName = jsonData.filename
+  const fileData = jsonData.data;
+  console.log(fileName, fileData)
+  // fs.writeFile(fileName, fileData, (err) => {
+  //   if (err) {
+  //     console.log('file is corrupt!');
+  //   } else {
+  //     console.log(`successfully copied file ${fileName}!`)
+  //   }
+  // });
 });
 
 const requestFile = (filename) => {
@@ -16,6 +28,6 @@ const requestFile = (filename) => {
   }));
 }
 
-requestFile('file1');
+const filename = process.argv[2];
 
-conn.setEncoding('utf8');
+requestFile(filename);
