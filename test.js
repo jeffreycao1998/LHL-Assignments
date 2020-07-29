@@ -1,19 +1,34 @@
-const stdin = process.stdin;
-// don't worry about these next two lines of setup work.
-stdin.setRawMode(true);
-stdin.setEncoding('utf8');
+const transpose = function(matrix) {
+  // Put your solution here
+};
 
-////////////
-// Event Handling for User Input
-////////////
+// Do not edit this function.
+const printMatrix = (matrix) => {
+    for (const row of matrix) {
+        for (const el of row) {
+            process.stdout.write(el + " ");
+        }
+        process.stdout.write('\n')
+    }
+}
 
-// on any input from stdin (standard input), output a "." to stdout
-stdin.on('data', (key) => {
-  if (key === '\u0003') {
-    process.exit();
-  }
+printMatrix(transpose([
+  [1, 2, 3, 4],
+  [1, 2, 3, 4],
+  [1, 2, 3, 4],
+  [1, 2, 3, 4]
+]));
 
-  process.stdout.write('.');
-});
+console.log('----')
 
-console.log('after callback');
+printMatrix(transpose([
+  [1, 2],
+  [3, 4],
+  [5, 6]
+]));
+
+console.log('----')
+
+printMatrix(transpose([
+  [1, 2, 3, 4, 5, 6, 7]
+]));
