@@ -11,14 +11,13 @@ conn.on('data', data => {
   const jsonData = JSON.parse(data);
   const fileName = jsonData.filename
   const fileData = jsonData.data;
-  console.log(fileName, fileData)
-  // fs.writeFile(fileName, fileData, (err) => {
-  //   if (err) {
-  //     console.log('file is corrupt!');
-  //   } else {
-  //     console.log(`successfully copied file ${fileName}!`)
-  //   }
-  // });
+  fs.writeFile(fileName, fileData, (err) => {
+    if (err) {
+      console.log('file is corrupt!');
+    } else {
+      console.log(`successfully copied file ${fileName}!`)
+    }
+  });
 });
 
 const requestFile = (filename) => {
