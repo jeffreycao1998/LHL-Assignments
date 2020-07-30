@@ -9,7 +9,7 @@ function newTask(title, description) {
     },
 
     markCompleted: function completeTask(task) {
-      this.complete = true;
+      task.complete = true;
     },
   };
   return task;
