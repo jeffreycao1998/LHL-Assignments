@@ -1,0 +1,128 @@
+$light-grey: rgb(218, 218, 218);
+$dark-blue: rgb(68, 68, 172);
+$hover-dark-blue: rgb(58, 58, 146);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 1920px;
+  height: 100vh;
+  position: relative;
+}
+
+/*************************/
+/*******MAIN PAGE*********/
+/*************************/
+#main-page {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  background-color: rgb(218, 218, 218);
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  .content {
+    width: 1140px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .title-container {
+      min-width: 500px;
+      margin: 300px auto 0 auto;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      h1 {
+        font-family: 'Source Code Pro';
+        font-weight: 700;
+        font-size: 70px;
+        display: inline-block;
+        color: $dark-blue;
+      }
+      input {
+        border: none;
+        font-size: 30px;
+        width: 300px;
+        height: 45px;
+        color: black;
+        margin-left: 10px;
+        padding: 5px 12px;
+        text-align: center;
+        outline: none;
+      }
+    }
+    .button-container {
+      width: 700px;
+      margin: 50px auto 0 auto;
+      text-align: center;
+      button {
+        width: 250px;
+        background-color: $dark-blue;
+        color: white;
+        font-size: 25px;
+        padding: 10px;
+        outline: none;
+        border: none;
+        &:hover {
+          cursor: pointer;
+          background-color: $hover-dark-blue;
+        }
+        &:active {
+          transform: translateY(2px);
+        }
+      }
+    }
+    .pun-container {
+      margin-top: 200px;
+      text-align: center;
+      #battleship-pun {
+        color: $dark-blue;
+        font-family: arial;
+      }
+    }
+  }
+}
+
+/*************************/
+/*******GAME PAGE*********/
+/*************************/
+#game-page {
+  position: absolute;
+  z-index: 2;
+  background-color: $light-grey;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  .game-container {
+    width: 1620px;
+    height: 100vh;
+    border: 1px solid blue;
+    .player1-container {
+      width: 100%;
+      height: 50%;
+      border: 1px solid purple;
+    }
+    .player2-container {
+      width: 100%;
+      height: 50%;
+      border: 1px solid purple;
+    }
+  }
+  .utility-container {
+    width: 600px;
+    height: 100vh;
+    border: 1px solid green;
+  }
+  .leaderboard-container {
+    width: 400px;
+    height: 100vh;
+    border: 1px solid red;
+  }
+}
