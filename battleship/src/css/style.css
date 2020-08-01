@@ -20,9 +20,7 @@ body {
   width: 100%;
   height: 100vh;
   position: absolute;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: none;
   background-color: #dadada;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -30,7 +28,6 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  z-index: 1;
 }
 
 #main-page .content {
@@ -120,8 +117,8 @@ body {
   position: absolute;
   z-index: 2;
   background-color: #dadada;
-  width: 100%;
-  height: 100vh;
+  width: 1920px;
+  height: 1080px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -133,16 +130,59 @@ body {
   border: 1px solid blue;
 }
 
-#game-page .game-container .player1-container {
+#game-page .game-container .container {
   width: 100%;
   height: 50%;
   border: 1px solid purple;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-#game-page .game-container .player2-container {
+#game-page .game-container .container .battleships {
+  width: 400px;
+  height: 100%;
+  border: 1px solid red;
+}
+
+#game-page .game-container .container .battleships .name-container {
   width: 100%;
-  height: 50%;
-  border: 1px solid purple;
+  text-align: center;
+  padding: 10px;
+}
+
+#game-page .game-container .container .battleships .name-container .name {
+  font-family: arial;
+}
+
+#game-page .game-container .container .battleships .all-pieces {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+#game-page .game-container .container .battleships .all-pieces .ship {
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#game-page .game-container .container .battleships .all-pieces .ship .piece-cell {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border: 1px solid red;
+}
+
+#game-page .game-container .container .board {
+  width: 800px;
+  height: 100%;
+  border: 1px solid red;
 }
 
 #game-page .utility-container {
