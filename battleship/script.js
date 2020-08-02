@@ -1,48 +1,38 @@
+const socket = io('http://localhost:8000');
 
+const updatePlayerName = ({player, name}) => {
+  if (!name) {
+    $(`#name-p${player}`).text('Waiting for player...');
+  }
+  $(`#name-p${player}`).text(name);
+};
 
-// const socket = io('http://localhost:8000');
-
-// socket.on('connect', () => {
-//   socket.emit('name', 'jeff');
-// });
-
-document.addEventListener('dblclick', () => {
+const fullscreen = () => {
+  $('#game-page').css("display", "flex");
   document.documentElement.requestFullscreen().catch((err) => {
     console.log(err);
   });
-});
-
-const loadPlayerNames = (nameA, nameB) => {
-  $('#name-p1').text(nameA);
-  $('#name-p2').text(nameB);
-};
-
-// const loadPlayerPieces = ({carrier, battleship, cruiser, subarmine, destroyer}) => {
-//   const carrierHTML = '<div class=""'
-
-//   $('.all-pieces-p1').html('')
-// }
-
-// const loadPlayerSettings = ({
-//   shotsPerTurn, 
-//   boardSize, 
-//   carrier, 
-//   battleship, 
-//   cruiser, 
-//   submarine, 
-//   destroyer}) => {
-//     socket.emit('')
-// };
-
-const settings = {
-  shotsPerTurn: 1,
-  boardSize: 10,
-  carrier: 1,
-  battleship: 1,
-  cruiser: 1,
-  submarine: 1,
-  destroyer: 1
 }
 
-loadPlayerNames('Jim John', 'Pit Pat');
-// loadPlayerSettings(settings)
+// Client Event Handlers
+$('#btn-friend').on('click', () => {
+  const inputAlias = $('#input-alias').val();
+  socket.emit('name', inputAlias);
+
+  fullscreen()
+});
+
+$('#btn-computer').on('click',() => {
+  fullscreen();
+});
+
+// Server Event Handlers
+socket.on('player joined', data => {
+  updatePlayerName(data);
+});
+
+socket.on('player disconnected', data => {
+  updatePlayerName(data);
+});
+
+socket.on

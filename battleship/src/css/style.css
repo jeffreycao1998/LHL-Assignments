@@ -8,8 +8,8 @@
 body {
   margin: 0;
   padding: 0;
-  width: 1920px;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
@@ -18,7 +18,7 @@ body {
 /*************************/
 #main-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -66,6 +66,7 @@ body {
 
 #main-page .content .title-container input {
   border: none;
+  border-bottom: 1px solid #4444ac;
   font-size: 30px;
   width: 300px;
   height: 45px;
@@ -90,6 +91,7 @@ body {
   padding: 10px;
   outline: none;
   border: none;
+  border-radius: 2px;
 }
 
 #main-page .content .button-container button:hover {
@@ -119,24 +121,28 @@ body {
   position: absolute;
   z-index: 2;
   background-color: #dadada;
-  width: 1920px;
+  max-width: 1920px;
   height: 1080px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   display: none;
+  padding: 50px 100px;
+  border-radius: 2px solid #4444ac;
+  /****PLAYER BOARDS****/
+  /*********LOG**********/
+  /*****LEADERBOARD*******/
 }
 
 #game-page .game-container {
-  width: 1620px;
-  height: 100vh;
-  border: 1px solid blue;
+  width: 970px;
+  height: 100%;
+}
+
+#game-page .game-container .container-p1 {
+  border-bottom: 1px solid #4444ac;
 }
 
 #game-page .game-container .container {
   width: 100%;
   height: 50%;
-  border: 1px solid purple;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -145,7 +151,6 @@ body {
 #game-page .game-container .container .battleships {
   width: 400px;
   height: 100%;
-  border: 1px solid red;
 }
 
 #game-page .game-container .container .battleships .name-container {
@@ -164,6 +169,10 @@ body {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship {
@@ -171,7 +180,6 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  border: 1px solid red;
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship .piece-cell {
@@ -180,7 +188,7 @@ body {
   display: flex;
   width: 30px;
   height: 30px;
-  border: 1px solid red;
+  border: 1px solid #4444ac;
 }
 
 #game-page .game-container .container .board-container {
@@ -199,7 +207,7 @@ body {
 
 #game-page .game-container .container .board-container .board {
   position: relative;
-  border: 1px solid red;
+  border: 1px solid #4444ac;
 }
 
 #game-page .game-container .container .board-container .board .identifier-row {
@@ -239,18 +247,75 @@ body {
 #game-page .game-container .container .board-container .board .board-row .board-cell {
   width: 40px;
   height: 40px;
-  border: 1px solid red;
+  border: 1px solid #4444ac;
 }
 
 #game-page .utility-container {
-  width: 600px;
-  height: 100vh;
-  border: 1px solid green;
+  min-width: 450px;
+  max-width: 450px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#game-page .utility-container .log {
+  min-width: 350px;
+  max-width: 350px;
+  height: 85%;
+  background-color: white;
+  border-radius: 4px;
+}
+
+#game-page .utility-container .btns-container {
+  width: 350px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+#game-page .utility-container .btns-container button {
+  width: 250px;
+  background-color: #4444ac;
+  color: white;
+  font-size: 25px;
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 2px;
+}
+
+#game-page .utility-container .btns-container button:hover {
+  cursor: pointer;
+  background-color: #3a3a92;
+}
+
+#game-page .utility-container .btns-container button:active {
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+}
+
+#game-page .utility-container .btns-container .settings {
+  margin-left: 10px;
 }
 
 #game-page .leaderboard-container {
-  width: 400px;
-  height: 100vh;
-  border: 1px solid red;
+  min-width: 300px;
+  max-width: 450px;
+  height: 100%;
+  border: 1px solid #4444ac;
 }
 /*# sourceMappingURL=style.css.map */

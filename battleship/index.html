@@ -13,11 +13,11 @@
     <div class="content">
       <div class="title-container">
         <h1>SEA(WO)MAN: </h1>
-        <input placeholder="enter alias">
+        <input id="input-alias" placeholder="enter alias">
       </div>
       <div class="button-container">
-        <button>BATTLE FRIEND</button>
-        <button>BATTLE AI</button>
+        <button id="btn-friend">BATTLE FRIEND</button>
+        <button id="btn-computer">BATTLE AI</button>
       </div>
       <div class="pun-container">
         <h1 id="battleship-pun">"TBH Battleships only fun sometimes... It's really hit or miss"</h1>
@@ -32,7 +32,7 @@
       <div class="container container-p1">
         <div class="battleships battleships-p1">
           <div class="name-container">
-            <h1 class="name" id="name-p1">Player 1</h1>
+            <h1 class="name" id="name-p1">Waiting for player...</h1>
           </div>
           <!--Player 1 Pieces--> 
           <div class="all-pieces all-pieces-p1">
@@ -220,7 +220,7 @@
       <div class="container container-p2">
         <div class="battleships battleships-p2">
           <div class="name-container">
-            <h1 class="name" id="name-p2">Player 2</h1>
+            <h1 class="name" id="name-p2">Waiting for player...</h1>
           </div>
           <!--Player 2 Pieces--> 
           <div class="all-pieces all-pieces-p2">
@@ -405,7 +405,13 @@
       </div>
     </div>
     <div class="utility-container">
+      <div class="log">
 
+      </div>
+      <div class="btns-container">
+        <button class="concede">CONCEDE</button>
+        <button class="settings">SETTINGS</button>
+      </div>
     </div>
     <div class="leaderboard-container">
 
@@ -413,7 +419,7 @@
   </section>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <!-- <script src="http://localhost:8000/socket.io/socket.io.js"></script> -->
+  <script src="http://localhost:8000/socket.io/socket.io.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>
