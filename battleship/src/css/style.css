@@ -20,7 +20,9 @@ body {
   width: 100%;
   height: 100vh;
   position: absolute;
-  display: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   background-color: #dadada;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -122,6 +124,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  display: none;
 }
 
 #game-page .game-container {
@@ -164,24 +167,78 @@ body {
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship {
-  padding: 20px;
+  margin: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  border: 1px solid red;
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship .piece-cell {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border: 1px solid red;
 }
 
-#game-page .game-container .container .board {
+#game-page .game-container .container .board-container {
   width: 800px;
   height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#game-page .game-container .container .board-container .board {
+  position: relative;
+  border: 1px solid red;
+}
+
+#game-page .game-container .container .board-container .board .identifier-row {
+  position: absolute;
+  left: -40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#game-page .game-container .container .board-container .board .identifier-column {
+  position: absolute;
+  top: -40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#game-page .game-container .container .board-container .board .identifier {
+  width: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: 600;
+}
+
+#game-page .game-container .container .board-container .board .board-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#game-page .game-container .container .board-container .board .board-row .board-cell {
+  width: 40px;
+  height: 40px;
   border: 1px solid red;
 }
 
