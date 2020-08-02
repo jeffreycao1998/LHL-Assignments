@@ -9,7 +9,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: relative;
 }
 
@@ -23,7 +23,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background-color: #dadada;
+  background-color: #f3f3f3;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -64,14 +64,17 @@ body {
   color: #4444ac;
 }
 
-#main-page .content .title-container input {
+#main-page .content .title-container .input-container {
+  margin-left: 10px;
+  border-bottom: 2px solid #4444ac;
+}
+
+#main-page .content .title-container .input-container input {
   border: none;
-  border-bottom: 1px solid #4444ac;
   font-size: 30px;
   width: 300px;
   height: 45px;
   color: black;
-  margin-left: 10px;
   padding: 5px 12px;
   text-align: center;
   outline: none;
@@ -120,7 +123,7 @@ body {
 #game-page {
   position: absolute;
   z-index: 2;
-  background-color: #dadada;
+  background-color: #f3f3f3;
   max-width: 1920px;
   height: 1080px;
   display: none;

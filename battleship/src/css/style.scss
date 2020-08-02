@@ -1,4 +1,4 @@
-$light-grey: rgb(218, 218, 218);
+$light-grey: rgb(243, 243, 243);
 $dark-blue: rgb(68, 68, 172);
 $hover-dark-blue: rgb(58, 58, 146);
 
@@ -12,7 +12,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: relative;
 }
 
@@ -24,7 +24,7 @@ body {
   height: 100%;
   position: absolute;
   display: flex;
-  background-color: rgb(218, 218, 218);
+  background-color: $light-grey;
   justify-content: center;
   align-items: center;
   .content {
@@ -45,17 +45,19 @@ body {
         display: inline-block;
         color: $dark-blue;
       }
-      input {
-        border: none;
-        border-bottom: 1px solid $dark-blue;
-        font-size: 30px;
-        width: 300px;
-        height: 45px;
-        color: black;
+      .input-container {
         margin-left: 10px;
-        padding: 5px 12px;
-        text-align: center;
-        outline: none;
+        border-bottom: 2px solid $dark-blue;
+        input {
+          border: none;
+          font-size: 30px;
+          width: 300px;
+          height: 45px;
+          color: black;
+          padding: 5px 12px;
+          text-align: center;
+          outline: none;
+        }
       }
     }
     .button-container {
