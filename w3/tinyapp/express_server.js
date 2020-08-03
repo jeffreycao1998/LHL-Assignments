@@ -31,6 +31,7 @@ app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 
+// GET
 app.get('/urls', (req, res) => {
   let templateVars = { 
     urls: urlDatabase,
