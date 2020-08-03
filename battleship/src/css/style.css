@@ -154,6 +154,7 @@ body {
 #game-page .game-container .container .battleships {
   width: 400px;
   height: 100%;
+  border-right: 1px solid #4444ac;
 }
 
 #game-page .game-container .container .battleships .name-container {
@@ -176,13 +177,17 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship {
-  margin: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  margin: 20px;
+  border: 1px solid #4444ac;
 }
 
 #game-page .game-container .container .battleships .all-pieces .ship .piece-cell {

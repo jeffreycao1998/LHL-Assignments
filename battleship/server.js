@@ -4,14 +4,14 @@ const setInitialData = (socket, name, player) => {
   socket.data = {
     player,
     name,
-    piecesNotPlaced: ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer'],
-    pieceOrientation: 'horizontal',
+    shipsNotPlaced: ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer'],
+    shipOrientation: 'horizontal',
     boardSize: 10,
     shotsPerTurn: 1,
   }
   socket.data = {
     ...socket.data,
-    currentPiece: socket.data.piecesNotPlaced[0],
+    currentShip: 0,
   }
 }
 
@@ -30,6 +30,10 @@ io.on('connect', socket => {
       io.emit('player joined', socket.data);
       io.emit('player joined', players[0].data);
     }
+  });
+
+  socket.on('place ship', ({player, coordinate, ship}) => {
+
   });
 
   socket.on('disconnect', () => {

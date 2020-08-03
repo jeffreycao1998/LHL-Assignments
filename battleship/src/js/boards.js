@@ -15,7 +15,7 @@ const createColumns = (player, boardSize) => {
     let columnsHTML = '';
 
     for (let x = 1; x <= boardSize; x++) {
-      columnsHTML += `<div class="board-cell p1-board-column-${alphabets[x - 1]}"></div>`
+      columnsHTML += `<div class="board-cell p${player}-${alphabets[x - 1]}${y}"></div>`
     }
 
     $(`.p${player}-board-row-${y}`).html(columnsHTML);
@@ -46,3 +46,16 @@ const createBoard = ({player, boardSize}) => {
   createColumns(player, boardSize);
   createCoordinates(player, boardSize);
 };
+
+const addBoardHoverEffects = ({player, currentShip}) => {
+  $('.board-cell').mouseover((ev) => {
+    const target = $(ev.target);
+    const cell = target.attr('class').split(' ')[1];
+    $(`.${cell}`).css('background-color', 'rgb(68, 68, 172)');
+  });
+  $('.board-cell').mouseleave((ev) => {
+    const target = $(ev.target);
+    const cell = target.attr('class').split(' ')[1];
+    $(`.${cell}`).css('background-color', 'white');
+  });
+}

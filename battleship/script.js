@@ -16,10 +16,12 @@ $('#btn-computer').on('click',() => {
 socket.on('player joined', data => {
   updatePlayerName(data);
   createBoard(data);
+  createShips(data);
+  colorCurrentShip(data);
+  addBoardHoverEffects(data);
 });
 
 socket.on('player disconnected', data => {
   updatePlayerName(data);
 });
 
-socket.on

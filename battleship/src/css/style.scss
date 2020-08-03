@@ -119,6 +119,7 @@ body {
       .battleships {
         width: 400px;
         height: 100%;
+        border-right: 1px solid $dark-blue;
         .name-container {
           width: 100%;
           text-align: center;
@@ -131,9 +132,11 @@ body {
           display: flex;
           flex-wrap: wrap;
           flex-direction: column;
+          align-items: flex-start;
           .ship {
-            margin: 20px;
             display: flex;
+            margin: 20px;
+            border: 1px solid $dark-blue;
             .piece-cell {
               display: flex;
               width: 30px;

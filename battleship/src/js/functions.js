@@ -12,6 +12,8 @@ const updatePlayerName = ({player, name}) => {
   $(`#name-p${player}`).text(name);
 };
 
+
+
 const applyBoardHoverEffects = (hoveredCell, currentPiece) => {
   switch (currentPiece) {
     case 'carrier':
