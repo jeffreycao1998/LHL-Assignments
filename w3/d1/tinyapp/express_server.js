@@ -7,12 +7,14 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+app.set('view engine', 'ejs');
+
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
 });
 
 app.get('/hello', (req, res) => {
-  res.send('<html><body>Hello <b>World</b></body></html>\n')
+  res.send(`a = ${a}`)
 });
 
 app.get('/', (req, res) => {
