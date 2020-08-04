@@ -1,77 +1,47 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const PORT = 8080;
+const users = require('./data/users');
+const urlDatabase = require('./data/urlDatabase');
+const { 
+  generateRandomString, 
+  getUserByEmail, 
+  urlsForUser 
+} = require('./helper_functions/helpers');
 
-const urlDatabase = {
-  "b2xVn2": { longURL: 'http://www.lighthouselabs.ca', userId: 'xyz987' },
-  "9sm5xK": { longURL: 'http://www.google.com', userId: 'abc123' },
-  "sgq3y6": { longURL: 'http://www.youtube.com', userId: 'abc123' },
-};
-
-const users = {
-  abc123 : {
-    user_id: 'abc123',
-    email: 'jeffreycao1998@hotmail.com',
-    password: '$2b$10$BW2DXeU72M4nk/iu3vNIHe2az9/33Wur1u89eaYGi5YUWiXYyY.GC'
-  },
-}
-
-const generateRandomString = () => {
-  const urlLetters = [
-    '1','2','3','4','5','6','7','8','9',
-    'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-  ];
-  const result = [];
-  for (let i = 0; i < 6; i++) {
-    const randNum = (Math.round(Math.random() * 61));
-    result.push(urlLetters[randNum]);
-  }
-  return result.join('');
-};
-
-const getUser = (email) => {
-  for (let user in users) {
-    if (users[user].email === email) {
-      return users[user];
-    }
-  }
-}
-
-const urlsForUser = id => {
-  const filteredDatabase = {};
-
-  for (let url in urlDatabase) {
-    if (urlDatabase[url].userId === id) {
-      filteredDatabase[url] = urlDatabase[url];
-    }
-  }
-  return filteredDatabase;
-}
-
+//------------------------------------------//
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['blahblah']
+}));
 
 app.set('view engine', 'ejs');
 
-// GET-------------------------------------
+// GET ROUTES-------------------------------//
+// shows all urls of user in a table
 app.get('/urls', (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
+
+  if (!userId) {
+    return res.send('Please login!');
+  }
 
   let templateVars = { 
-    urls: urlsForUser(userId),
+    urls: urlsForUser(urlDatabase, userId),
     user: users[userId],
   };
   res.render('urls_index', templateVars);
 });
 
+// shows create a new shortURL page
 app.get("/urls/new", (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   if (!userId) {
     return res.redirect('/login');
   }
@@ -81,41 +51,83 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+// shows edit page of the shortURL
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
+
+  if (!urlDatabase.hasOwnProperty(shortURL)) {
+    return res.status(404).send('invalid shortURL!')
+  }
+  if (!userId) {
+    return res.status(401).send('Unauthorized access, please login');
+  }
+  if (urlDatabase[shortURL].userId !== userId) {
+    return res.status(401).send('Unauthorized access, you are not the creator of this shortURL');
+  }
+
   let templateVars = { 
     shortURL, 
     longURL: urlDatabase[shortURL].longURL,
+    date: urlDatabase[shortURL].date,
+    visits: urlDatabase[shortURL].visits,
     user: users[userId],
   };
-  res.render('urls_show', templateVars)
+  res.render('urls_show', templateVars);
 });
 
+// register form
 app.get('/register', (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
+
+  if (userId) {
+    return res.redirect('/urls');
+  }
+
   let templateVars = {
     user: users[userId],
   };
   res.render('register', templateVars);
 });
 
+// login form
 app.get('/login', (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
+
+  if (userId) {
+    return res.redirect('/urls');
+  }
+
   let templateVars = {
     user: users[userId],
   };
   res.render('login', templateVars);
 });
 
+// redirects to the longURL version of the shortURL
 app.get('/u/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
 
+  if (!shortURL) {
+    return res.status(404).send('invalid shortURL');
+  }
+  urlDatabase[shortURL].visits += 1;
   res.redirect(longURL);
 });
 
-// POST-----------------------------------
+// shows all urls of user in a table
+app.get('/', (req, res) => {
+  const userId = req.session.user_id;
+
+  if (userId) {
+    return res.redirect('/urls');
+  }
+  res.redirect('/login');
+})
+
+// POST ROUTES------------------------------//
+// Register (set session cookie)
 app.post('/register', (req, res) => {
   const id = generateRandomString();
   const email = req.body.email;
@@ -124,7 +136,7 @@ app.post('/register', (req, res) => {
   if (!email || !password) {
     return res.status(400).send('e-mail or password was empty');
   }
-  if (getUser(email)) {
+  if (getUserByEmail(users, email)) {
     return res.status(400).send('email already registered');
   }
 
@@ -132,58 +144,83 @@ app.post('/register', (req, res) => {
     id,
     email,
     password: bcrypt.hashSync(password, 10)
-  }
-  res.cookie('user_id', id);
-  res.redirect('/urls')
+  };
+  req.session.user_id = id;
+  res.redirect('/urls');
 });
 
+// Login (set session cookie)
 app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (getUser(email)) {
-    const user = getUser(email);
+  if (getUserByEmail(users, email)) {
+    const user = getUserByEmail(users, email);
+
     if (bcrypt.compareSync(password, user.password)) {
-      return res.cookie('user_id', user.user_id).redirect('/urls');
+      req.session.user_id = user.user_id;
+      return res.redirect('/urls');
     }
     return res.status(403).send('wrong password');
   }
   res.status(403).send('e-mail cannot be found');
 });
 
+// Logout (clear session cookie)
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  req.session = null;
   res.redirect('/urls');
 });
 
+// Create new shortURL
 app.post('/urls', (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
   const shortURL = generateRandomString();
-  urlDatabase[shortURL] = { longURL: req.body.longURL, userId };
+  const longURL = req.body.longURL;
+  const date = new Date(Date.now()).toLocaleString();
 
-  res.redirect(`/urls/:${shortURL}`);
+  if (longURL.slice(0, 7) !== 'http://') {
+    return res.status(400).send('url must start with http://');
+  }
+  if (!userId) {
+    return res.status(400).send('must be logged in to create shortURL');
+  }
+  urlDatabase[shortURL] = { longURL, userId, date, visits: 0 };
+  res.redirect(`/urls/${shortURL}`);
 });
 
+// Delete shortURL
 app.post('/urls/:shortURL/delete', (req, res) => {
-  const userId = req.cookies.user_id;
-  const usersURLs = urlsForUser(userId);
+  const userId = req.session.user_id;
+  const usersURLs = urlsForUser(urlDatabase, userId);
   const shortURL = req.params.shortURL;
 
+  if(!userId) {
+    return res.status(400).send('must be logged in to delete shortURL');
+  }
   if (usersURLs.hasOwnProperty(shortURL)) {
     delete urlDatabase[shortURL];
     return res.redirect('/urls');
   }
-  res.redirect('/login');
+  res.status(400).send('only the creators of the shortURL can delete it');
 });
 
+// Edit shortURL
 app.post('/urls/:id', (req, res) => {
   const shortURL = req.params.id;
   const longURL = req.body.longURL;
-  const userId = req.cookies.user_id;
+  const userId = req.session.user_id;
 
-  urlDatabase[shortURL] = { longURL, userId };
-  res.redirect(`/urls/${shortURL}`);
+  if (!userId) {
+    return res.status(400).send('must be logged in to edit shortURLS');
+  }
+  if (userId !== urlDatabase[shortURL].userId) {
+    return res.status(400).send('must be creator of shortURL to edit');
+  }
+  urlDatabase[shortURL] = { ...urlDatabase[shortURL], longURL};
+  res.redirect('/urls');
 });
+//-------------------------------------//
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
