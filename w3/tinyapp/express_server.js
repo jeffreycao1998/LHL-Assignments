@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const PORT = 8080;
 
 const urlDatabase = {
@@ -14,7 +15,7 @@ const users = {
   abc123 : {
     user_id: 'abc123',
     email: 'jeffreycao1998@hotmail.com',
-    password: 'password'
+    password: '$2b$10$BW2DXeU72M4nk/iu3vNIHe2az9/33Wur1u89eaYGi5YUWiXYyY.GC'
   },
 }
 
@@ -130,9 +131,8 @@ app.post('/register', (req, res) => {
   users[id] = {
     id,
     email,
-    password
+    password: bcrypt.hashSync(password, 10)
   }
-
   res.cookie('user_id', id);
   res.redirect('/urls')
 });
@@ -143,7 +143,7 @@ app.post('/login', (req, res) => {
 
   if (getUser(email)) {
     const user = getUser(email);
-    if (user.password === password) {
+    if (bcrypt.compareSync(password, user.password)) {
       return res.cookie('user_id', user.user_id).redirect('/urls');
     }
     return res.status(403).send('wrong password');
