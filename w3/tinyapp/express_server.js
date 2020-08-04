@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
+const methodOverride = require('method-override');
 const PORT = 8080;
 const users = require('./data/users');
 const urlDatabase = require('./data/urlDatabase');
@@ -20,6 +21,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ['blahblah']
 }));
+app.use(methodOverride('_method'));
 
 app.set('view engine', 'ejs');
 
@@ -70,7 +72,8 @@ app.get('/urls/:shortURL', (req, res) => {
     shortURL, 
     longURL: urlDatabase[shortURL].longURL,
     date: urlDatabase[shortURL].date,
-    visits: urlDatabase[shortURL].visits,
+    visitsTotal: urlDatabase[shortURL].visitsTotal,
+    visitsUnique: urlDatabase[shortURL].visitsUnique,
     user: users[userId],
   };
   res.render('urls_show', templateVars);
@@ -106,13 +109,17 @@ app.get('/login', (req, res) => {
 
 // redirects to the longURL version of the shortURL
 app.get('/u/:shortURL', (req, res) => {
+  const userId = req.session.user_id;
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
 
   if (!shortURL) {
     return res.status(404).send('invalid shortURL');
   }
-  urlDatabase[shortURL].visits += 1;
+  if (!urlDatabase[shortURL].visitsUnique.includes(userId)) {
+    urlDatabase[shortURL].visitsUnique.push(userId);
+  }
+  urlDatabase[shortURL].visitsTotal += 1;
   res.redirect(longURL);
 });
 
@@ -185,12 +192,12 @@ app.post('/urls', (req, res) => {
   if (!userId) {
     return res.status(400).send('must be logged in to create shortURL');
   }
-  urlDatabase[shortURL] = { longURL, userId, date, visits: 0 };
+  urlDatabase[shortURL] = { longURL, userId, date, visitsTotal: 0, visitsUnique: [] };
   res.redirect(`/urls/${shortURL}`);
 });
 
 // Delete shortURL
-app.post('/urls/:shortURL/delete', (req, res) => {
+app.delete('/urls/:shortURL', (req, res) => {
   const userId = req.session.user_id;
   const usersURLs = urlsForUser(urlDatabase, userId);
   const shortURL = req.params.shortURL;
@@ -206,7 +213,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 });
 
 // Edit shortURL
-app.post('/urls/:id', (req, res) => {
+app.put('/urls/:id', (req, res) => {
   const shortURL = req.params.id;
   const longURL = req.body.longURL;
   const userId = req.session.user_id;
@@ -220,8 +227,8 @@ app.post('/urls/:id', (req, res) => {
   urlDatabase[shortURL] = { ...urlDatabase[shortURL], longURL};
   res.redirect('/urls');
 });
-//-------------------------------------//
 
+//-------------------------------------//
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });

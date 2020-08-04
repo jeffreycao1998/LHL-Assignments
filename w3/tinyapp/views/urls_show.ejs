@@ -15,9 +15,10 @@
         <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
       </div>
       <h4>Created: <%= date %></h4>
-      <h4>Visits: <%= visits %></h4>
+      <h4>Unique Visits: <%= visitsUnique.length; %></h4>
+      <h4>Total Visits: <%= visitsTotal %></h4>
       <h1>EDIT</h1>
-      <form method="POST" action="/urls/<%= shortURL %>">
+      <form method="POST" action="/urls/<%= shortURL %>?_method=PUT">
         New URL:
         <input name="longURL">
         <button>Update</button>
