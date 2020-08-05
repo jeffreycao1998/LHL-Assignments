@@ -89,6 +89,7 @@ app.get('/register', (req, res) => {
 
   let templateVars = {
     user: users[userId],
+    error: '',
   };
   res.render('register', templateVars);
 });
@@ -103,6 +104,7 @@ app.get('/login', (req, res) => {
 
   let templateVars = {
     user: users[userId],
+    error: '',
   };
   res.render('login', templateVars);
 });
@@ -136,15 +138,24 @@ app.get('/', (req, res) => {
 // POST ROUTES------------------------------//
 // Register (set session cookie)
 app.post('/register', (req, res) => {
+  const userId = req.session.user_id;
   const id = generateRandomString();
   const email = req.body.email;
   const password = req.body.password;
 
   if (!email || !password) {
-    return res.status(400).send('e-mail or password was empty');
+    let templateVars = {
+      user: users[userId],
+      error: 'email or password was empty'
+    }
+    return res.render('register', templateVars);
   }
   if (getUserByEmail(users, email)) {
-    return res.status(400).send('email already registered');
+    let templateVars = {
+      user: users[userId],
+      error: 'email already registered'
+    }
+    return res.render('register', templateVars);
   }
 
   users[id] = {
@@ -158,6 +169,7 @@ app.post('/register', (req, res) => {
 
 // Login (set session cookie)
 app.post('/login', (req, res) => {
+  const userId = req.session.user_id;
   const email = req.body.email;
   const password = req.body.password;
 
@@ -168,9 +180,17 @@ app.post('/login', (req, res) => {
       req.session.user_id = user.user_id;
       return res.redirect('/urls');
     }
-    return res.status(403).send('wrong password');
+    let templateVars = {
+      user: users[userId],
+      error: 'wrong password'
+    }
+    return res.render('login', templateVars);
   }
-  res.status(403).send('e-mail cannot be found');
+  let templateVars = {
+    user: users[userId],
+    error: 'e-mail cannot be found'
+  }
+  res.render('login', templateVars);
 });
 
 // Logout (clear session cookie)
