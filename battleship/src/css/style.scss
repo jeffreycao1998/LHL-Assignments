@@ -1,6 +1,7 @@
 $light-grey: rgb(243, 243, 243);
 $dark-blue: rgb(68, 68, 172);
 $hover-dark-blue: rgb(58, 58, 146);
+$cell-color: rgb(235, 235, 255);
 
 * {
   margin: 0;
@@ -82,6 +83,11 @@ body {
         }
       }
     }
+    .name-error-message {
+      text-align: center;
+      color: red;
+      margin-top: 10px;
+    }
     .pun-container {
       margin-top: 200px;
       text-align: center;
@@ -137,11 +143,13 @@ body {
             display: flex;
             margin: 20px;
             border: 1px solid $dark-blue;
+            background-color: $cell-color;
             .piece-cell {
               display: flex;
               width: 30px;
               height: 30px;
               border: 1px solid $dark-blue;
+              background-color: transparent;
             }
           }
         }
@@ -179,6 +187,7 @@ body {
               width: 40px;
               height: 40px;
               border: 1px solid $dark-blue;
+              background-color: $cell-color;
             }
           }
         }

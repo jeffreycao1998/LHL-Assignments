@@ -1,8 +1,8 @@
 const makeFullscreen = () => {
   $('#game-page').css("display", "flex");
-  document.documentElement.requestFullscreen().catch((err) => {
-    console.log(err);
-  });
+  // document.documentElement.requestFullscreen().catch((err) => {
+  //   console.log(err);
+  // });
 }
 
 const updatePlayerName = ({player, name}) => {
@@ -11,8 +11,6 @@ const updatePlayerName = ({player, name}) => {
   }
   $(`#name-p${player}`).text(name);
 };
-
-
 
 const applyBoardHoverEffects = (hoveredCell, currentPiece) => {
   switch (currentPiece) {
