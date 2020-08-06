@@ -1,25 +1,30 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
+
 const PORT = 8080;
+const app = express();
+
+// Data bases
 const users = require('./data/users');
 const urlDatabase = require('./data/urlDatabase');
-const { 
-  generateRandomString, 
-  getUserByEmail, 
-  urlsForUser 
+
+// Helper Functions
+const {
+  generateRandomString,
+  getUserByEmail,
+  urlsForUser,
 } = require('./helper_functions/helpers');
 
 //------------------------------------------//
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
 }));
 app.use(cookieSession({
   name: 'session',
-  keys: ['blahblah']
+  keys: ['blahblah'],
 }));
 app.use(methodOverride('_method'));
 
@@ -34,32 +39,32 @@ app.get('/urls', (req, res) => {
     return res.send('Please login!');
   }
 
-  let templateVars = { 
+  const templateVars = {
     urls: urlsForUser(urlDatabase, userId),
     user: users[userId],
   };
-  res.render('urls_index', templateVars);
+  return res.render('urls_index', templateVars);
 });
 
 // shows create a new shortURL page
-app.get("/urls/new", (req, res) => {
+app.get('/urls/new', (req, res) => {
   const userId = req.session.user_id;
   if (!userId) {
     return res.redirect('/login');
   }
-  let templateVars = {
+  const templateVars = {
     user: users[userId],
   };
-  res.render("urls_new", templateVars);
+  return res.render('urls_new', templateVars);
 });
 
 // shows edit page of the shortURL
 app.get('/urls/:shortURL', (req, res) => {
-  const shortURL = req.params.shortURL;
+  const { shortURL } = req.params;
   const userId = req.session.user_id;
 
   if (!urlDatabase.hasOwnProperty(shortURL)) {
-    return res.status(404).send('invalid shortURL!')
+    return res.status(404).send('invalid shortURL!');
   }
   if (!userId) {
     return res.status(401).send('Unauthorized access, please login');
@@ -68,15 +73,15 @@ app.get('/urls/:shortURL', (req, res) => {
     return res.status(401).send('Unauthorized access, you are not the creator of this shortURL');
   }
 
-  let templateVars = { 
-    shortURL, 
+  const templateVars = {
+    shortURL,
     longURL: urlDatabase[shortURL].longURL,
     date: urlDatabase[shortURL].date,
     visitsTotal: urlDatabase[shortURL].visitsTotal,
     visitsUnique: urlDatabase[shortURL].visitsUnique,
     user: users[userId],
   };
-  res.render('urls_show', templateVars);
+  return res.render('urls_show', templateVars);
 });
 
 // register form
@@ -87,11 +92,11 @@ app.get('/register', (req, res) => {
     return res.redirect('/urls');
   }
 
-  let templateVars = {
+  const templateVars = {
     user: users[userId],
     error: '',
   };
-  res.render('register', templateVars);
+  return res.render('register', templateVars);
 });
 
 // login form
@@ -102,18 +107,18 @@ app.get('/login', (req, res) => {
     return res.redirect('/urls');
   }
 
-  let templateVars = {
+  const templateVars = {
     user: users[userId],
     error: '',
   };
-  res.render('login', templateVars);
+  return res.render('login', templateVars);
 });
 
 // redirects to the longURL version of the shortURL
 app.get('/u/:shortURL', (req, res) => {
   const userId = req.session.user_id;
-  const shortURL = req.params.shortURL;
-  const longURL = urlDatabase[shortURL].longURL;
+  const { shortURL } = req.params;
+  const { longURL } = urlDatabase[shortURL];
 
   if (!shortURL) {
     return res.status(404).send('invalid shortURL');
@@ -122,7 +127,7 @@ app.get('/u/:shortURL', (req, res) => {
     urlDatabase[shortURL].visitsUnique.push(userId);
   }
   urlDatabase[shortURL].visitsTotal += 1;
-  res.redirect(longURL);
+  return res.redirect(longURL);
 });
 
 // shows all urls of user in a table
@@ -132,46 +137,44 @@ app.get('/', (req, res) => {
   if (userId) {
     return res.redirect('/urls');
   }
-  res.redirect('/login');
-})
+  return res.redirect('/login');
+});
 
 // POST ROUTES------------------------------//
 // Register (set session cookie)
 app.post('/register', (req, res) => {
   const userId = req.session.user_id;
   const id = generateRandomString();
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
   if (!email || !password) {
-    let templateVars = {
+    const templateVars = {
       user: users[userId],
-      error: 'email or password was empty'
-    }
+      error: 'email or password was empty',
+    };
     return res.render('register', templateVars);
   }
   if (getUserByEmail(users, email)) {
-    let templateVars = {
+    const templateVars = {
       user: users[userId],
-      error: 'email already registered'
-    }
+      error: 'email already registered',
+    };
     return res.render('register', templateVars);
   }
 
   users[id] = {
     id,
     email,
-    password: bcrypt.hashSync(password, 10)
+    password: bcrypt.hashSync(password, 10),
   };
   req.session.user_id = id;
-  res.redirect('/urls');
+  return res.redirect('/urls');
 });
 
 // Login (set session cookie)
 app.post('/login', (req, res) => {
   const userId = req.session.user_id;
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
   if (getUserByEmail(users, email)) {
     const user = getUserByEmail(users, email);
@@ -180,17 +183,17 @@ app.post('/login', (req, res) => {
       req.session.user_id = user.user_id;
       return res.redirect('/urls');
     }
-    let templateVars = {
+    const templateVars = {
       user: users[userId],
-      error: 'wrong password'
-    }
+      error: 'wrong password',
+    };
     return res.render('login', templateVars);
   }
-  let templateVars = {
+  const templateVars = {
     user: users[userId],
-    error: 'e-mail cannot be found'
-  }
-  res.render('login', templateVars);
+    error: 'e-mail cannot be found',
+  };
+  return res.render('login', templateVars);
 });
 
 // Logout (clear session cookie)
@@ -203,7 +206,7 @@ app.post('/logout', (req, res) => {
 app.post('/urls', (req, res) => {
   const userId = req.session.user_id;
   const shortURL = generateRandomString();
-  const longURL = req.body.longURL;
+  const { longURL } = req.body;
   const date = new Date(Date.now()).toLocaleString();
 
   if (longURL.slice(0, 7) !== 'http://') {
@@ -212,30 +215,36 @@ app.post('/urls', (req, res) => {
   if (!userId) {
     return res.status(400).send('must be logged in to create shortURL');
   }
-  urlDatabase[shortURL] = { longURL, userId, date, visitsTotal: 0, visitsUnique: [] };
-  res.redirect(`/urls/${shortURL}`);
+  urlDatabase[shortURL] = {
+    longURL,
+    userId,
+    date,
+    visitsTotal: 0,
+    visitsUnique: [],
+  };
+  return res.redirect(`/urls/${shortURL}`);
 });
 
 // Delete shortURL
 app.delete('/urls/:shortURL', (req, res) => {
   const userId = req.session.user_id;
   const usersURLs = urlsForUser(urlDatabase, userId);
-  const shortURL = req.params.shortURL;
+  const { shortURL } = req.params;
 
-  if(!userId) {
+  if (!userId) {
     return res.status(400).send('must be logged in to delete shortURL');
   }
   if (usersURLs.hasOwnProperty(shortURL)) {
     delete urlDatabase[shortURL];
     return res.redirect('/urls');
   }
-  res.status(400).send('only the creators of the shortURL can delete it');
+  return res.status(400).send('only the creators of the shortURL can delete it');
 });
 
 // Edit shortURL
 app.put('/urls/:id', (req, res) => {
   const shortURL = req.params.id;
-  const longURL = req.body.longURL;
+  const { longURL } = req.body;
   const userId = req.session.user_id;
 
   if (!userId) {
@@ -244,8 +253,8 @@ app.put('/urls/:id', (req, res) => {
   if (userId !== urlDatabase[shortURL].userId) {
     return res.status(400).send('must be creator of shortURL to edit');
   }
-  urlDatabase[shortURL] = { ...urlDatabase[shortURL], longURL};
-  res.redirect('/urls');
+  urlDatabase[shortURL] = { ...urlDatabase[shortURL], longURL };
+  return res.redirect('/urls');
 });
 
 //-------------------------------------//
