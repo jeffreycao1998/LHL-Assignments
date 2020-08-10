@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="1200" height="1000"></canvas>
+    <script>
+      const Point = function(x, y) {
+        this.X = x;
+        this.Y = y;
+      };
+      const canvas = document.getElementById('myCanvas');
+      const context = canvas.getContext('2d');
+      const alpha = Math.PI * 0.275,
+            beta = -Math.PI * 0.35,
+            ratioA = 0.775,
+            ratioB = 0.45,
+            MIN_LENGTH = 5;
+      
+      const drawLine = function(rootPoint, r, theta) {
+        console.log('plus');
+        context.beginPath();
+        const endX = rootPoint.X + r * Math.cos(theta);
+        const endY = rootPoint.Y + r * Math.sin(theta);
+        const endPoint = new Point(endX, endY);
+
+        context.moveTo(rootPoint.X, rootPoint.Y);
+        context.lineTo(endPoint.X, endPoint.Y);
+        context.stroke();
+
+        if (r * ratioA < MIN_LENGTH || r * ratioB < MIN_LENGTH) {
+          return;
+        }
+        drawLine(endPoint, r * ratioA, theta + alpha);
+        drawLine(endPoint, r * ratioB, theta + beta);
+      };
+
+      const startPoint = new Point(300, 500);
+      drawLine(startPoint, 200, Math.PI * 3 / 2);
+    </script>
+  </body>
+</html> 
