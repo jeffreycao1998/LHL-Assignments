@@ -198,3 +198,36 @@ const addProperty = function(property) {
   .then(res => res.rows[0]);
 }
 exports.addProperty = addProperty;
+
+const addReservation = (reservation) => {
+  const keys = Object.keys(reservation);
+  const values = keys.map(key => reservation[key]);
+
+  let queryString = `
+  INSERT INTO reservations(`
+
+  for (let i = 0; i < keys.length; i++) {
+    if (i === 0) {
+      queryString += `${keys[i]}`
+    } else {
+      queryString += `, ${keys[i]}`
+    }
+  }
+
+  queryString += `) VALUES (`
+
+  for (let i = 1; i <= keys.length; i++) {
+    if (i === 1) {
+      queryString += `$${i}`
+    } else {
+      queryString += `, $${i} `
+    }
+  }
+
+  queryString += `)`
+
+  return pool.query(queryString, values)
+    .then(res => res.rows[0])
+
+}
+exports.addReservation = addReservation;
