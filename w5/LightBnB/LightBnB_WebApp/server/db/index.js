@@ -1,5 +1,5 @@
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
+const properties = require('../json/properties.json');
+const users = require('../json/users.json');
 const { Pool } = require('pg');
 const { query } = require('express');
 
@@ -124,7 +124,6 @@ const getAllProperties = function(options, limit = 10) {
   if (options.maximum_price_per_night) {
     queryParams.push(Number(options.maximum_price_per_night) * 100);
 
-    console.log(queryString.includes('WHERE'))
     if (queryString.includes('WHERE')) {
       queryString += `AND cost_per_night <= $${queryParams.length}`;
     } else {
@@ -151,9 +150,6 @@ const getAllProperties = function(options, limit = 10) {
   ORDER BY cost_per_night
   LIMIT $${queryParams.length};
   `;
-
-  // console.log(options);
-  console.log(queryString, queryParams);
 
   return pool.query(queryString, queryParams)
   .then(res => res.rows);
