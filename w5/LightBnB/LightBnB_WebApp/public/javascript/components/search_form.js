@@ -20,6 +20,11 @@ $(() => {
       </div>
 
       <div class="search-property-form__field-wrapper">
+        <label for="search-property-form__owner_id">Owner Id</label>
+        <input type="number" name="owner_id" placeholder="Owner Id" id="search-property-form__owner_id">
+      </div>
+
+      <div class="search-property-form__field-wrapper">
           <button>Search</button>
           <a id="search-property-form__cancel" href="#">Cancel</a>
       </div>
